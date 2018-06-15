@@ -1,4 +1,8 @@
-# rss-scanner
-scans rss feed
+This is an RSS scanner for the National Vulnerability Database (http://nvd.nist.gov/)
 
-# this is a commit change test thing
+
+
+Requirements:
+  mysql database
+  multiple libraries, some not native to python
+  
