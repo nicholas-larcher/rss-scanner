@@ -2,12 +2,12 @@
 import feedparser
 import re
 import smtplib
-import datetime
-import time
+import sqlite3
 
-# emails
-# email_pool = {'windows': 'oag_test_windows@mailinator.com', 'dev': 'oag_test_dev@mailinator.com',
-#              'linux': 'oag_test_linux@mailinator.com', 'software': 'oag_test_software@mailinator.com'}
+# SQLite database variable & cursor
+db = sqlite3.connect('nvd.db')
+c = db.cursor()
+
 
 # NVD RSS feed variable
 d = feedparser.parse('https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml')
