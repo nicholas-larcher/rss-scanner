@@ -27,7 +27,10 @@ for vendor, product in affected_products:
 
 
 # sql code for inserting stuff into tables
-    #c.executemany('INSERT INTO product VALUES (?, ?, CURRENT_DATE)', affected_products)
+    #c.execute('CREATE TABLE product(vendor TEXT, product TEXT, date_added TEXT, UNIQUE(vendor, product))')
+
+    c.executemany('INSERT OR IGNORE INTO product VALUES (?, ?, CURRENT_DATE)', affected_products)
 
 db.commit()
 db.close()
+
