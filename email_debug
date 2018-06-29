@@ -1,0 +1,21 @@
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+
+msg = MIMEMultipart()
+msg['From'] = 'oag.bvg.test@gmail.com'
+msg['To'] = 'nick.larcher87@gmail.com'
+password = '240Sparks'
+
+msg['Subject'] = 'IT Security automated vulnerability monitoring'
+
+body = 'Hello, there is a new vulnerability for your department:\nCVE-link\nThis is an automated email, please do not respond to it. If you have any questions or concerns about these emails, please contact the IT Security team.'
+
+msg.attach(MIMEText(body, 'html'))
+print(msg)
+# SMTP server and port number. Not to be omitted.
+server = smtplib.SMTP("smtp.gmail.com", 587)
+server.starttls()
+server.login(msg['From'], password)
+server.sendmail(msg['From'], msg['To'], msg.as_string())
+server.quit()
