@@ -43,20 +43,23 @@ def product_scan(product_name):
 
     # vulnerability links list
     vuln_list = []
-    title_list =[]
+    title_list = []
+    summary_list = []
     # counter for how many vulns per product
     count = 0
     for entry in d.entries:
         if product_name in entry.title:
             count += 1
             # here we append the hyperlinks, product names and today's date to a list so we can manipulate it later
-            vuln_list.append((entry.link, entry.title))
+            vuln_list.append((entry.link, entry.title, entry.summary))
             title_list.append([entry.title])
+            summary_list.append([entry.summary])
 
 # sql code for inserting stuff into tables
-# the 'ignore' part will avoid adding duplicates so long as there is a UNIQUE column.
+# the 'ignore' part will avoid adding duplicates so long as there is a UNIQUE column. The UNIQUE column is the one to
+# not be duplicated.
 
-        c.executemany('INSERT OR IGNORE INTO cve VALUES (?, ?, CURRENT_DATE)', vuln_list)
+        c.executemany('INSERT OR IGNORE INTO cve VALUES (?, ?, ?, CURRENT_DATE)', vuln_list)
 
     # making it look nice
     if count == 1:
