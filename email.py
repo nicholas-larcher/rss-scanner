@@ -13,8 +13,8 @@ cve_link_string = ''.join(cve_link)
 
 msg = MIMEMultipart()
 msg['From'] = 'oag.bvg.test@gmail.com'
-msg['To'] = 'oag.sysadmin@mailinator.com'
 password = '240Sparks'
+msg['To'] = 'oag.windows@mailinator.com'
 msg['Subject'] = 'IT Security automated vulnerability monitoring / Système automatisé de surveillance des vulnérabilitées de Sécurité TI'
 
 body = "Le francais suit l'anglais" \
