@@ -50,7 +50,7 @@ def product_scan(product_name):
     for entry in d.entries:
         if product_name in entry.title:
             count += 1
-            # here we append the hyperlinks, product names and today's date to a list so we can manipulate it later
+            # here we append the hyperlinks, description(summary), product names and todays' date to a list so we can manipulate it later
             vuln_list.append((entry.link, entry.title, entry.summary))
             title_list.append([entry.title])
             summary_list.append([entry.summary])
