@@ -10,6 +10,53 @@ from datetime import date
 db = sqlite3.connect('nvd.db')
 c = db.cursor()
 
+# email function
+def send_email(to_addr, vuln_desc, cve_link_string):
+
+    msg = MIMEMultipart()
+    # sender email, password, receiver email and subject.
+    msg['From'] = 'oag.bvg.test@gmail.com'
+    password = '240Sparks'
+    msg['To'] = to_addr
+    msg['Subject'] = 'IT Security automated vulnerability monitoring / ' \
+                     'Système automatisé de surveillance des vulnérabilitées de Sécurité TI'
+
+    # body of email, string mixed with HTML
+    body =  "Le francais suit l'anglais" \
+            "<br><br>" \
+            "Hello, there is a new vulnerability for your department." \
+            "<br> " \
+            "Summary of the vulnerability:"\
+            "<br>"\
+            "<strong>" + vuln_desc + "</strong>" \
+            "<br>"\
+            "<a href="+cve_link_string+">Clink this link to view the vulnerability</a>" \
+            "<br>" \
+            "This is an automated message, please do not respond. If you have any questions or concerns, " \
+            "please contact IT Security." \
+            "" \
+            "<br><br><br><br>" \
+            "Bonjour, il y a une nouvelle vulnérabilité pour votre département." \
+            "<br>" \
+            "Sommaire de la vulnérabilité: " \
+            "<br>"\
+            "<strong>"+ vuln_desc +"</strong>" \
+            "<br>"\
+            "<a href="+cve_link_string+">Cliquez sur ce lien pour voir la vulnérabilité</a>" \
+            "<br>"\
+            "Ceci est un méssage automatisé, veuillez ne pas répondre s'il-vous-plait. Si vous avez des questions, " \
+            "veuillez contacté le département de Sécurité TI."
+
+    msg.attach(MIMEText(body, 'html'))
+    print(msg)
+
+    # SMTP server and port number. Not to be omitted.
+    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server.login(msg['From'], password)
+    server.sendmail(msg['From'], msg['To'], msg.as_string())
+    server.quit()
+
+    # ===end of send_email function=== #
 
 # comment out create table after running once
 
@@ -29,7 +76,7 @@ print(d['feed']['title'], 'Scanner')
 print("+++++++++++++++++++++++++++++++++++++++\n")
 
 # function for database product names instead of hardcoding names in the code.
-def read_from_db():
+def product_db():
 
     read_from_db_list = []
     c.execute('SELECT product_name FROM product')
@@ -37,6 +84,7 @@ def read_from_db():
         read_from_db_list.append(row[0])
 
     return read_from_db_list
+    # === end of product_db function === #
 
 # function for iterating through the entries and printing out how many vulns there are
 def product_scan(product_name):
@@ -74,10 +122,14 @@ def product_scan(product_name):
     # this for loop is for enumerating the links for each product CVE code
     for x in vuln_list:
         print(x)
+    # ===end of product_scan function=== #
 
-
-for product in read_from_db():
+for product in product_db():
     product_scan(product)
+
+
+
+
 
 
 db.commit()
