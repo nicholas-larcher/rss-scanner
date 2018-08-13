@@ -136,25 +136,51 @@ def sql_fetcher(prod_name, dept_email):
     hyperlink = []
     summary = []
     title = []
-    # comment below is there until i figure out how to fucking send an email
-    #c.execute('SELECT * FROM cve WHERE title LIKE ',prod_name,' AND date_added = CURRENT_DATE')
-    c.execute('SELECT hyperlink FROM cve WHERE title LIKE ' + prod_name + ' AND date_added = CURRENT_DATE')
+
+    c.execute('SELECT hyperlink FROM cve WHERE title LIKE ? AND date_added = CURRENT_DATE', (prod_name,))
     for link in c.fetchall():
         hyperlink.append(link)
-    c.execute('SELECT summary FROM cve WHERE title LIKE ' + prod_name + ' AND date_added = CURRENT_DATE')
+    c.execute('SELECT summary FROM cve WHERE title LIKE ? AND date_added = CURRENT_DATE', (prod_name,))
     for desc in c.fetchall():
         summary.append(desc)
-    c.execute('SELECT title FROM cve WHERE title LIKE ' + prod_name + ' AND date_added = CURRENT_DATE')
+    c.execute('SELECT title FROM cve WHERE title LIKE ? AND date_added = CURRENT_DATE', (prod_name,))
     for tit in c.fetchall():
         title.append(tit)
+    # c.execute('SELECT hyperlink FROM cve WHERE title LIKE ', prod_name, ' AND date_added = CURRENT_DATE')
+    # for link in c.fetchall():
+    #     hyperlink.append(link)
+    # c.execute('SELECT summary FROM cve WHERE title LIKE ', prod_name, ' AND date_added = CURRENT_DATE')
+    # for desc in c.fetchall():
+    #     summary.append(desc)
+    # c.execute('SELECT title FROM cve WHERE title LIKE ', prod_name, ' AND date_added = CURRENT_DATE')
+    # for tit in c.fetchall():
+    #     title.append(tit)
 
-
+    # this is the for loop where we call the send_email function and actually send emails.
     for l, t, d in zip(hyperlink, title, summary):
-        print(l, t, d)
-    print(len(hyperlink))
-    print('---------')
+        if prod_name in t:
+            send_email(dept_email, d, l)
+        elif prod_name not in t:
+            continue
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+    for l, t, d in zip(hyperlink, title, summary):
+        print(l,t,d)
+print('---------------------------------------------------------------------------------------------------------------')
+print('---------------------------------------------------------------------------------------------------------------')
+print('---------------------------------------------------------------------------------------------------------------')
+print('---------------------------------------------------------------------------------------------------------------')
+print('---------------------------------------------------------------------------------------------------------------')
 
-sql_fetcher('windows_10', 'oag.windows@mailinator.com')
+sql_fetcher('windows_10', 'oag.windows10@mailinator.com')
 
 db.commit()
 db.close()
